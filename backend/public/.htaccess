@@ -1,0 +1,14 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+
+# Sprečavanje listanja foldera
+Options -Indexes
+
+# Blokiraj pristup .htaccess fajlu
+<Files .htaccess>
+  Order allow,deny
+  Deny from all
+</Files>

@@ -1,0 +1,14 @@
+# Blokiraj pristup .env fajlu
+<Files .env>
+  Order allow,deny
+  Deny from all
+</Files>
+
+# Blokiraj pristup config fajlovima
+<FilesMatch "(\.ini|\.log|\.sql|\.bak|\.sh|\.inc|config\.php)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Spreči listanje direktorijuma
+Options -Indexes
