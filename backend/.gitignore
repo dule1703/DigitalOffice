@@ -1,0 +1,20 @@
+# Ignoriši .env fajl (lokalne i produkcione varijante)
+.env
+.env.local
+.env.prod
+
+# Ignoriši log fajlove i privremene
+*.log
+*.bak
+*.tmp
+
+# Ignoriši vendor ako koristiš Composer
+/vendor/
+
+# Ignoriši IDE fajlove ako ih koristiš lokalno u backend
+.vscode/
+.idea/
+
+# Ignoriši konfiguracione bekap fajlove
+*.old
+*.conf
