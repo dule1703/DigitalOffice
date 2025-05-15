@@ -10,6 +10,7 @@
 
 # Ignoriši vendor ako koristiš Composer
 /vendor/
+/backend/composer.phar
 
 # Ignoriši IDE fajlove ako ih koristiš lokalno u backend
 .vscode/
