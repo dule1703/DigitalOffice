@@ -95,6 +95,8 @@ class AuthService {
             $mail->isHTML(true);
             $mail->Subject = 'Vaš 2FA kod za prijavu';
             $mail->Body    = "Vaš kod za potvrdu je: <strong>$code</strong><br>Važi 10 minuta.";
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'base64';
 
             $mail->send();
             return true;
