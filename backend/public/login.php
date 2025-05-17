@@ -2,6 +2,8 @@
 require_once __DIR__ . '/../app/Core/Database.php';
 require_once __DIR__ . '/../app/Core/AuthService.php';
 
+use App\Core\AuthService;
+
 header('Content-Type: application/json');
 
 try {

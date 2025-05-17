@@ -74,14 +74,21 @@ class AuthService {
         $mail = new PHPMailer(true);
 
         try {
+            $mail->SMTPDebug = 2; // Omogući debug
+            $mail->Debugoutput = function($str, $level) {
+                error_log("PHPMailer Debug [$level]: $str");
+            };
+
             $mail->isSMTP();
             $mail->Host       = getenv('SMTP_HOST');
             $mail->SMTPAuth   = true;
             $mail->Username   = getenv('SMTP_USER');
             $mail->Password   = getenv('SMTP_PASS');
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Promeni sa STARTTLS na SMTPS
             $mail->Port       = getenv('SMTP_PORT');
-
+            error_log("SMTP_USER: " . getenv('SMTP_USER'));
+            error_log("To: " . $toEmail);
+            error_log("Kod: " . $code);
             $mail->setFrom(getenv('SMTP_FROM'), getenv('SMTP_FROM_NAME'));
             $mail->addAddress($toEmail);
 
