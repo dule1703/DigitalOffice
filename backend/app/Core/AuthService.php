@@ -107,8 +107,8 @@ class AuthService {
             return ['status' => 'error', 'message' => 'Korisnik ne postoji.'];
         }
 
-        $now = new DateTime();
-        $expiry = new DateTime($user['twofa_expiry']);
+        $now = new \DateTime();
+        $expiry = new \DateTime($user['twofa_expiry']);
 
         if ($user['twofa_code'] !== $code) {
             return ['status' => 'error', 'message' => 'Kod nije ispravan.'];
