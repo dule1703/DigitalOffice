@@ -97,4 +97,39 @@ class AuthService {
             return false;
         }
     }
+
+    public function verifyTwoFactorCode($userId, $code) {
+        $stmt = $this->conn->prepare("SELECT twofa_code, twofa_expiry FROM user WHERE id = :id");
+        $stmt->execute(['id' => $userId]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            return ['status' => 'error', 'message' => 'Korisnik ne postoji.'];
+        }
+
+        $now = new DateTime();
+        $expiry = new DateTime($user['twofa_expiry']);
+
+        if ($user['twofa_code'] !== $code) {
+            return ['status' => 'error', 'message' => 'Kod nije ispravan.'];
+        }
+
+        if ($now > $expiry) {
+            return ['status' => 'error', 'message' => 'Kod je istekao.'];
+        }
+
+        // Kod je ispravan
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $this->conn->prepare("
+            UPDATE user 
+            SET twofa_verified = 1, last_login = NOW(), last_ip = :ip 
+            WHERE id = :id
+        ")->execute([
+            'id' => $userId,
+            'ip' => $ip
+        ]);
+
+        return ['status' => 'success', 'message' => 'Uspešno ste se prijavili.'];
+    }
+
 }
