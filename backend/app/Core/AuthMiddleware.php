@@ -28,7 +28,7 @@ class AuthMiddleware
 
         try {
             $decoded = JWT::decode($token, new Key($secret, 'HS256'));
-            return (array)$decoded; // možeš koristiti $decoded->uid itd.
+            return (array)$decoded; // možeš koristiti $decoded->uid.
         } catch (Exception $e) {
             http_response_code(401);
             echo json_encode(['status' => 'error', 'message' => 'Nevažeći ili istekao token.']);

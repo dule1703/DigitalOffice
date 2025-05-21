@@ -6,6 +6,8 @@
 # Ignoriši vendor ako koristiš Composer
 /vendor/
 /backend/.env
+.env
+*.env
 /backend/composer.phar
 /backend/public/error_log
 

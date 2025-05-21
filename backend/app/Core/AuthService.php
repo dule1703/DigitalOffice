@@ -132,14 +132,17 @@ class AuthService {
         ]);
 
         // JWT token payload
+        $baseUrl = getenv('APP_URL') ?: 'http://localhost';
+
         $payload = [
-            'iss' => 'http://localhost', // ili domen u produkciji
-            'aud' => 'http://localhost',
+            'iss' => $baseUrl,
+            'aud' => $baseUrl,
             'iat' => time(),
-            'exp' => time() + 3600, // 1 sat važenja
+            'exp' => time() + 3600,
             'uid' => $userId,
             'email' => $user['email']
         ];
+
 
         $jwtSecret = getenv('JWT_SECRET');
         $token = \Firebase\JWT\JWT::encode($payload, $jwtSecret, 'HS256');
