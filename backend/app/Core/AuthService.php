@@ -6,6 +6,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PDO;
 use App\Core\Database;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 class AuthService {
@@ -99,7 +101,7 @@ class AuthService {
     }
 
     public function verifyTwoFactorCode($userId, $code) {
-        $stmt = $this->conn->prepare("SELECT twofa_code, twofa_expiry FROM user WHERE id = :id");
+        $stmt = $this->conn->prepare("SELECT email, twofa_code, twofa_expiry FROM user WHERE id = :id");
         $stmt->execute(['id' => $userId]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -129,7 +131,103 @@ class AuthService {
             'ip' => $ip
         ]);
 
-        return ['status' => 'success', 'message' => 'Uspešno ste se prijavili.'];
+        // JWT token payload
+        $payload = [
+            'iss' => 'http://localhost', // ili domen u produkciji
+            'aud' => 'http://localhost',
+            'iat' => time(),
+            'exp' => time() + 3600, // 1 sat važenja
+            'uid' => $userId,
+            'email' => $user['email']
+        ];
+
+        $jwtSecret = getenv('JWT_SECRET');
+        $token = \Firebase\JWT\JWT::encode($payload, $jwtSecret, 'HS256');
+
+        return [
+            'status' => 'success',
+            'message' => 'Uspešno ste se prijavili.',
+            'token' => $token
+        ];
     }
+
+   public function sendResetToken($email) {
+    try {
+        // 1. Provera da li korisnik postoji
+        $stmt = $this->conn->prepare("SELECT id FROM user WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            return ['status' => 'error', 'message' => 'Korisnik ne postoji.'];
+        }
+
+        // 2. Generisanje tokena i isteka
+        $token = bin2hex(random_bytes(32));
+        $expiry = (new \DateTime('+1 hour'))->format('Y-m-d H:i:s');
+
+        // 3. Čuvanje u bazu
+        $update = $this->conn->prepare("
+            UPDATE user 
+            SET reset_token = :token, reset_expiry = :expiry 
+            WHERE id = :id
+        ");
+        $update->execute([
+            'token' => $token,
+            'expiry' => $expiry,
+            'id' => $user['id']
+        ]);
+
+        error_log("Token za reset postavljen korisniku ID {$user['id']}: $token (istice $expiry)");
+
+        // 4. Generisanje linka na osnovu APP_URL iz .env
+        $baseUrl = getenv('APP_URL') ?: 'http://localhost';
+        $resetLink = rtrim($baseUrl, '/') . '/reset-password?token=' . $token;
+
+        error_log("Reset link: $resetLink");
+
+        // 5. Slanje mejla
+        $emailSent = $this->sendResetEmail($email, $resetLink);
+
+        if (!$emailSent) {
+            error_log("Greška: Slanje mejla za reset nije uspelo korisniku $email.");
+            return ['status' => 'error', 'message' => 'Došlo je do greške prilikom slanja emaila.'];
+        }
+
+        return ['status' => 'success', 'message' => 'Link za reset lozinke je poslat.'];
+
+    } catch (\Exception $e) {
+        error_log("Greška u sendResetToken(): " . $e->getMessage());
+        return ['status' => 'error', 'message' => 'Greška na serveru. Pokušajte kasnije.'];
+    }
+}
+
+
+    private function sendResetEmail($toEmail, $link) {
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host       = getenv('SMTP_HOST');
+            $mail->SMTPAuth   = true;
+            $mail->Username   = getenv('SMTP_USER');
+            $mail->Password   = getenv('SMTP_PASS');
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = getenv('SMTP_PORT');
+
+            $mail->setFrom(getenv('SMTP_FROM'), getenv('SMTP_FROM_NAME'));
+            $mail->addAddress($toEmail);
+            $mail->isHTML(true);
+            $mail->Subject = 'Reset lozinke';
+            $mail->Body    = "Kliknite na sledeći link da resetujete lozinku: <br><a href='$link'>$link</a><br>Link važi 1 sat.";
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'base64';
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            error_log("Mailer Error: " . $mail->ErrorInfo);
+        }
+    }
+
 
 }
