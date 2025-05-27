@@ -1,5 +1,7 @@
 <?php
+require_once __DIR__ . '/../app/Core/cors.php';
 require_once __DIR__ . '/../vendor/autoload.php';
+
 
 use App\Core\AuthService;
 
