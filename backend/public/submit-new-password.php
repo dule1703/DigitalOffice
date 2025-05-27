@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../app/Core/Database.php';
+require_once __DIR__ . '/../app/Core/cors.php';
+
 use App\Core\Database;
 header('Content-Type: application/json');
 
