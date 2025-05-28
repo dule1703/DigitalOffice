@@ -1,6 +1,7 @@
 
 # == PHP & Server Config Files ==
 .env
+.env.*
 config.php
 /config/
 *.bak

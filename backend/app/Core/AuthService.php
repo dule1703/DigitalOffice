@@ -143,8 +143,13 @@ class AuthService {
             $mail->Body    = "Vaš kod za potvrdu je: <strong>$code</strong><br>Važi 10 minuta.";
             $mail->CharSet = 'UTF-8';
             $mail->Encoding = 'base64';
+            
+            if ($mail->send()) {
+                error_log("✅ Mail je uspešno poslat na " . $toEmail);
+            } else {
+                error_log("❌ Slanje mejla nije uspelo: " . $mail->ErrorInfo);
+            }
 
-            $mail->send();
             return true;
         } catch (Exception $e) {
             error_log('Mailer Error: ' . $mail->ErrorInfo);

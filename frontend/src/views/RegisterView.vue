@@ -36,9 +36,9 @@ const register = async () => {
   isLoading.value = true;
   errorMessage.value = '';
   successMessage.value = '';
-
+  const API_URL = import.meta.env.VITE_API_URL;
   try {
-    const response = await fetch('https://localhost/DigitalOffice/backend/public/register.php', {
+    const response = await fetch(`${API_URL}/register.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

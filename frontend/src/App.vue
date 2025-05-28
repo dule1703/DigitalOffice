@@ -12,7 +12,7 @@ const router = useRouter();
 
 let inactivityTimer = null;
 
-// 🕓 Token proverava svakih 30 sekundi
+// Token proverava svakih 30 sekundi
 const startTokenExpiryCheck = () => {
   setInterval(() => {
     const token = auth.token;
@@ -39,14 +39,14 @@ const startTokenExpiryCheck = () => {
 };
 
 
-// 😴 Logout nakon 5 minuta neaktivnosti
+// Logout nakon 5 minuta neaktivnosti
 const handleInactivity = () => {
   console.log('😴 Neaktivnost 5 min. Logout.');
   auth.logout();
   router.push('/login').catch(() => {});
 };
 
-// 🎯 Reset pri aktivnosti
+// Reset pri aktivnosti
 const resetInactivityTimer = () => {
   clearTimeout(inactivityTimer);
   if (auth.isAuthenticated) {
