@@ -9,7 +9,7 @@
 .env
 *.env
 /backend/composer.phar
-/backend/public/error_log
+public/error_log
 # Ignoriši IDE fajlove ako ih koristiš lokalno u backend
 .vscode/
 .idea/
