@@ -32,7 +32,7 @@ const login = async () => {
     return;
   }
 
-  // 🚫 Resetuj stare podatke iz localStorage i store-a
+  //Resetuj stare podatke iz localStorage i store-a
   localStorage.removeItem('token');
   localStorage.removeItem('user_id');
   localStorage.removeItem('2fa_verified');
@@ -57,11 +57,11 @@ const login = async () => {
 
     if (result.status === 'success') {
       if (result['2fa_verified'] && result.token) {
-        // ✅ Direktan login jer je korisnik već verifikovan
+        //Direktan login jer je korisnik već verifikovan
         auth.setUser(result.user_id, result.token);
         router.push('/dashboard');
       } else {
-        // ⏳ Čeka se verifikacija koda
+        // Čeka se verifikacija koda
         sessionStorage.setItem('pending_user_id', result.user_id);
         router.push('/verify-2fa');
       }

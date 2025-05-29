@@ -21,16 +21,15 @@ const startTokenExpiryCheck = () => {
         const payload = JSON.parse(atob(token.split('.')[1]));
         if (payload && payload.exp) {
           const now = Math.floor(Date.now() / 1000);
-          const remaining = payload.exp - now;
-          console.log(`📆 Token ističe za ${remaining} sekundi`);
+          const remaining = payload.exp - now;        
           if (remaining <= 0) {
-            console.log('⛔ JWT token istekao. Logging out...');
+            console.log('JWT token istekao. Logging out...');
             auth.logout();
             router.push('/login').catch(() => {});
           }
         }
       } catch (e) {
-        console.warn('⚠️ Nevalidan token format');
+        console.warn('Nevalidan token format');
         auth.logout();
         router.push('/login').catch(() => {});
       }
@@ -41,7 +40,7 @@ const startTokenExpiryCheck = () => {
 
 // Logout nakon 5 minuta neaktivnosti
 const handleInactivity = () => {
-  console.log('😴 Neaktivnost 5 min. Logout.');
+  console.log('Neaktivnost 5 min. Logout.');
   auth.logout();
   router.push('/login').catch(() => {});
 };

@@ -53,7 +53,7 @@ class AuthService {
 
     // Ako je korisnik već 2FA-verifikovan, generiši token i loguj ga direktno
    if ($user['twofa_verified'] == 1) {
-    // 🕓 Proveri da li je prethodni token istekao (više od 1 sat)
+    // Proveri da li je prethodni token istekao (više od 1 sat)
     if (!empty($user['last_login'])) {
         $lastLogin = new \DateTime($user['last_login']);
         $now = new \DateTime();

@@ -49,9 +49,9 @@ const pendingUserId = Number(stored);
   isLoading.value = true;
   errorMessage.value = '';
   successMessage.value = '';
-
+  const API_URL = import.meta.env.VITE_API_URL;
   try {
-    const response = await fetch('http://localhost/DigitalOffice/backend/public/verify-2fa.php', {
+    const response = await fetch(`${API_URL}/verify-2fa.php`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
