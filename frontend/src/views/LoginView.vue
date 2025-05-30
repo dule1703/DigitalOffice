@@ -11,7 +11,14 @@
     </form>
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
   </div>
-  <router-link to="/register" class="register-link">Registruj se</router-link>
+  <div>
+    <router-link to="/register" class="register-link">Registruj se</router-link>
+  </div>
+  <div>
+    <router-link to="/reset-password-request" class="text-sm text-blue-600 hover:underline">
+  Zaboravljena lozinka?
+</router-link>
+  </div>
 </template>
 
 <script setup>
@@ -105,8 +112,7 @@ button:disabled {
   color: red;
 }
 
-.register-link {
-  display: inline-block;
+.register-link {  
   margin-top: 15px;
   color: #42b983;
   text-decoration: underline;

@@ -106,25 +106,35 @@ class AuthController {
         ];
     }
 
-    public function sendResetToken($email) {
-        $user = $this->userModel->findByEmail($email);
-        if (!$user) {
-            return ['status' => 'error', 'message' => 'Korisnik ne postoji.'];
-        }
-
-        $token = bin2hex(random_bytes(32));
-        $expiry = (new \DateTime('+1 hour'))->format('Y-m-d H:i:s');
-        $this->userModel->saveResetToken($user['id'], $token, $expiry);
-
-        $baseUrl = getenv('APP_URL') ?: 'http://localhost';
-        $resetLink = rtrim($baseUrl, '/') . '/reset-password?token=' . $token;
-
-        $emailSent = $this->sendResetEmail($email, $resetLink);
-
-        return $emailSent
-            ? ['status' => 'success', 'message' => 'Link za reset lozinke je poslat.']
-            : ['status' => 'error', 'message' => 'Greška prilikom slanja emaila.'];
+public function sendResetToken($email) {
+    $user = $this->userModel->findByEmail($email);
+    if (!$user) {
+        return ['status' => 'error', 'message' => 'Korisnik ne postoji.'];
     }
+
+    $token = bin2hex(random_bytes(32));
+    $expiry = (new \DateTime('+1 hour'))->format('Y-m-d H:i:s');
+    $this->userModel->saveResetToken($user['id'], $token, $expiry);
+
+    // Dozvoljeni frontend domeni
+    $origins = explode(',', getenv('ALLOWED_ORIGINS') ?: '');
+
+    // Logika: ako je HTTP_ORIGIN definisan, koristi ga ako postoji u listi
+    $frontendUrl = $origins[0]; // podrazumevani
+
+    if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $origins)) {
+        $frontendUrl = $_SERVER['HTTP_ORIGIN'];
+    }
+
+    $resetLink = rtrim($frontendUrl, '/') . '/reset-password?token=' . $token;
+
+    $emailSent = $this->sendResetEmail($email, $resetLink);
+
+    return $emailSent
+        ? ['status' => 'success', 'message' => 'Link za reset lozinke je poslat.']
+        : ['status' => 'error', 'message' => 'Greška prilikom slanja emaila.'];
+}
+
 
     public function submitNewPassword($token, $newPassword) {
         $user = $this->userModel->findByResetToken($token);

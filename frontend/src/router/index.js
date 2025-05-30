@@ -4,6 +4,8 @@ import DashboardView from '@/views/DashboardView.vue';
 import Verify2FAView from '@/views/Verify2FA.vue';
 import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
+import ResetPasswordRequestView from '@/views/ResetPasswordRequestView.vue';
+import SubmitNewPasswordView from '@/views/SubmitNewPasswordView.vue';
 
 const routes = [
   {
@@ -30,6 +32,14 @@ const routes = [
   {
     path: '/',
     redirect: '/login',
+  },
+  { path: '/reset-password-request', 
+    name: 'ResetRequest',
+    component: ResetPasswordRequestView 
+  },
+  { path: '/reset-password', 
+    name: 'ResetPassword',
+    component: SubmitNewPasswordView 
   },
 ];
 
