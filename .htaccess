@@ -9,3 +9,7 @@ RewriteRule ^ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ frontend/dist/index.html [L]
+
+# Pravilno servira js/css fajlove sa MIME tipovima
+AddType application/javascript .js
+AddType text/css .css
