@@ -44,7 +44,7 @@ const login = async () => {
   console.log("API_URL:", import.meta.env.VITE_API_URL);
 
   try {
-    const response = await fetch(`${API_URL}/login.php`, {
+    const response = await fetch(`${API_URL}login.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

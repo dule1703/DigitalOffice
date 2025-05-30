@@ -51,7 +51,7 @@ const pendingUserId = Number(stored);
   successMessage.value = '';
   const API_URL = import.meta.env.VITE_API_URL;
   try {
-    const response = await fetch(`${API_URL}/verify-2fa.php`, {
+    const response = await fetch(`${API_URL}verify-2fa.php`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
