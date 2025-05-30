@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /
+
+# Dozvoli direktan pristup API-ju
+RewriteCond %{REQUEST_URI} ^/backend/
+RewriteRule ^ - [L]
+
+# Za Vue frontend (history mode)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ frontend/dist/index.html [L]
