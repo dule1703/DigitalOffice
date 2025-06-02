@@ -1,5 +1,6 @@
 <template>
-<div class="login-background">
+  <div class="login-container">
+    <div class="login-background">
       <div class="login-card">
         <div class="logo">
           <span role="img" aria-label="Logo"><img src="../assets/logo.png" /></span>
@@ -19,6 +20,7 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -85,6 +87,17 @@ const login = async () => {
 
 
 <style scoped>
+.login-container {
+  width: 100%;
+  max-width: 1920px; 
+  height: 100vh;
+  background-image: url('../assets/loginBg.webp');
+  background-size: cover;       
+  background-position: center; 
+  background-repeat: no-repeat;
+  padding-top: 15%;
+}
+
 .login-background {
   text-align: center;
   color: white;
@@ -96,7 +109,7 @@ const login = async () => {
   border-radius: 10px;
   width: 100%;
   max-width: 400px;
-  margin-left: 20%;
+  margin-left: 20%; 
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -194,8 +207,23 @@ button:disabled {
 
 @media (max-width: 1024px) {
   .login-card {
-    margin-left: 0;
+    margin-left: 5rem;
     padding: 2rem 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    padding-top: 12rem;
+  }
+
+  .login-background {
+    padding: 10px;
+  }
+
+  .login-card {
+    margin: 0 auto;
+    padding: 2rem 1rem;
   }
 }
 
