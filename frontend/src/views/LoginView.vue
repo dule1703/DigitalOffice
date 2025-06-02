@@ -1,24 +1,24 @@
 <template>
-  <div class="login">
-    <h1>Login</h1>
-    <p>Please enter your credentials.</p>
-    <form @submit.prevent="login">
-      <input v-model="email" placeholder="Email" required />
-      <input v-model="password" type="password" placeholder="Password" required />
-      <button type="submit" :disabled="isLoading">
-        {{ isLoading ? 'Logging in...' : 'Login' }}
-      </button>
-    </form>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-  </div>
-  <div>
-    <router-link to="/register" class="register-link">Registruj se</router-link>
-  </div>
-  <div>
-    <router-link to="/reset-password-request" class="text-sm text-blue-600 hover:underline">
-  Zaboravljena lozinka?
-</router-link>
-  </div>
+<div class="login-background">
+      <div class="login-card">
+        <div class="logo">
+          <span role="img" aria-label="Logo"><img src="../assets/logo.png" /></span>
+        </div>        
+        <p>Ulogujte se na vaš nalog</p>
+        <form @submit.prevent="login" class="login-form">
+          <input v-model="email" placeholder="Username" required />
+          <input v-model="password" type="password" placeholder="Password" required />
+          <button type="submit" :disabled="isLoading">
+            {{ isLoading ? 'Logging in...' : 'Login' }}
+          </button>
+        </form>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+        <div class="links">
+          <span class="register-button"><router-link to="/register" class="register-link">Registruj se</router-link></span>          
+          <router-link to="/reset-password-request" class="reset-link">Zaboravljena lozinka?</router-link>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script setup>
@@ -85,38 +85,118 @@ const login = async () => {
 
 
 <style scoped>
-.login {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+.login-background {
   text-align: center;
+  color: white;
 }
-input {
-  padding: 8px;
-  margin: 10px 0;
+
+.login-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
   width: 100%;
-  box-sizing: border-box;
+  max-width: 400px;
+  margin-left: 20%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+.logo {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #1e3a8a;
+}
+
+p {
+  margin-bottom: 1.5rem;
+  color: #03316d;
+  font-weight: 700;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+input {
+  padding: 0.6rem;
+  margin: 0.5rem 0;
+  border: 1px solid #035aca;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
 button {
-  padding: 10px 20px;
-  background-color: #42b983;
+  padding: 0.75rem;
+  background-color: #035aca;
   color: white;
   border: none;
+  border-radius: 25px;
   cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+
 }
+
 button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
 .error {
   color: red;
+  margin-top: 1rem;
 }
 
-.register-link {  
-  margin-top: 15px;
-  color: #42b983;
+.links {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.register-button {
+  border: 1px solid #035aca;
+  border-radius: 20px;
+}
+
+.register-button:hover {
+  background-color: #035aca;  
+  cursor: pointer;
+}
+
+.register-link {
+  color: #035aca;
+  padding: 0 2rem;
+}
+
+.register-link:hover {
+  color: #fff !important;
+}
+
+.register-button a:hover {  
+  background-color: transparent;
+}
+
+.reset-link {
+  color: #1e3a8a;
   text-decoration: underline;
   cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .login-card {
+    margin-left: 0;
+    padding: 2rem 3rem;
+  }
 }
 
 </style>

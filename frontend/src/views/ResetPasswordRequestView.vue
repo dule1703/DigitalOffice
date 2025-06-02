@@ -11,6 +11,7 @@
     </form>
     <p v-if="message" class="mt-4 text-green-600">{{ message }}</p>
     <p v-if="error" class="mt-4 text-red-600">{{ error }}</p>
+     <router-link to="/login" class="back-link">Nazad na prijavu</router-link>
   </div>
 </template>
 
@@ -48,3 +49,11 @@ const handleRequest = async () => {
   }
 }
 </script>
+<style scoped>
+.back-link {
+  display: block;
+  margin-top: 15px;
+  color: #42b983;
+  text-decoration: underline;
+}
+</style>
