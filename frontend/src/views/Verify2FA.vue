@@ -1,21 +1,23 @@
 <template>
-  <div class="verify-2fa">
-    <h1>Verify 2FA</h1>
-    <p>Please enter your two-factor authentication code.</p>
-    <form @submit.prevent="verifyCode">
-      <input
-        type="text"
-        v-model="code"
-        placeholder="Enter 2FA code"
-        maxlength="6"
-      />
-      <button type="submit" :disabled="isButtonDisabled">
-        {{ isLoading ? 'Verifying...' : 'Verify' }}
-      </button>
-    </form>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-    <p v-if="successMessage" class="success">{{ successMessage }}</p>
-    <router-link to="/login" class="back-link">Nazad na prijavu</router-link>
+  <div class="verify-2fa-container">
+    <div class="verify-2fa-box">
+      <h1>Verify 2FA</h1>
+      <p>Please enter your two-factor authentication code.</p>
+      <form @submit.prevent="verifyCode">
+        <input
+          type="text"
+          v-model="code"
+          placeholder="Enter 2FA code"
+          maxlength="6"
+        />
+        <button type="submit" :disabled="isButtonDisabled">
+          {{ isLoading ? 'Verifying...' : 'Verify' }}
+        </button>
+      </form>
+      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+      <p v-if="successMessage" class="success">{{ successMessage }}</p>
+      <router-link to="/login" class="back-link">Nazad na prijavu</router-link>
+    </div>
   </div>
 </template>
 
@@ -86,46 +88,94 @@ const pendingUserId = Number(stored);
   }
 };
 
-/**/
 </script>
 
-
-
 <style scoped>
-.verify-2fa {
-  max-width: 400px;
-  margin: 0 auto;
+.verify-2fa-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #035aca;
   padding: 20px;
+}
+
+.verify-2fa-box {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   text-align: center;
-}
-input {
-  padding: 8px;
-  margin: 10px 0;
+  max-width: 400px;
   width: 100%;
-  box-sizing: border-box;
 }
+
+h1 {
+  color: #035aca;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+p {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #00aeef;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #035aca;
+}
+
 button {
-  padding: 10px 20px;
-  background-color: #42b983;
-  color: white;
+  width: 100%;
+  padding: 12px;
+  background-color: #00aeef;
+  color: #ffffff;
+  font-size: 16px;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
+
 button:disabled {
-  background-color: #cccccc;
+  background-color: #b3dff3;
   cursor: not-allowed;
 }
-.error {
-  color: red;
+
+button:hover:not(:disabled) {
+  background-color: #028ac2;
 }
+
+.error {
+  color: #d32f2f;
+  margin-top: 10px;
+}
+
 .success {
-  color: green;
+  color: #388e3c;
+  margin-top: 10px;
 }
 
 .back-link {
   display: block;
-  margin-top: 15px;
-  color: #42b983;
+  margin-top: 20px;
+  color: #00aeef;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back-link:hover {
   text-decoration: underline;
 }
 </style>
