@@ -1,67 +1,82 @@
 <template>
-  <div class="dashboard">
-    <h1>Dashboard</h1>
-    <p>Welcome, {{ userName }}! This is your dashboard.</p>
-    <button @click="logout">Logout</button>
+  <div class="home-container">
+    <div class="header">
+      <!-- Logout dugme gore desno -->
+      <LogoutView>
+        <!-- <template #logo>
+          <img :src="fullLogo" alt="full-logo"  />
+        </template> -->
+        <template #icon>
+          <img :src="logoutIcon" alt="Logout" width="24" height="24" />
+        </template>
+      </LogoutView>
+
+      <!-- Centralni blok: logo, ikonica, labela -->
+      <div class="center-stack">
+        <img src="@/assets/logoHome.png" alt="logo" class="logo-img" />
+        <img src="@/assets/ponuda.png" alt="ponuda" class="ponuda-img" @click="offersPage" />
+        <h4 class="label-ponuda">Ponude</h4>
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 
-export default {
-  name: 'DashboardView',
-  setup() {
-    // Reactive state
-    const userName = ref('');
-    const router = useRouter();
+<script setup>
+import {useRouter} from 'vue-router';
+import LogoutView from '@/components/LogoutView.vue';
+import logoutIcon from '@/assets/logoutIcon.png';
+import fullLogo from '@/assets/full-logo.png';
 
-    // Simulate fetching user data on mount
-    onMounted(async () => {
-      // Replace with actual API call to fetch user data
-      try {
-        // Simulated API call
-        const response = await new Promise((resolve) =>
-          setTimeout(() => resolve({ name: 'User' }), 500)
-        );
-        userName.value = response.name;
-      } catch (error) {
-        console.error('Failed to fetch user data:', error);
-        userName.value = 'Guest';
-      }
-    });
+const router = useRouter();
 
-    // Logout function
-    const logout = () => {
-      // Replace with actual logout logic (e.g., clear token, API call)
-      console.log('Logging out...');
-      router.push('/login');
-    };
-
-    return {
-      userName,
-      logout,
-    };
-  },
-};
+const offersPage = async() => {
+  router.push('/offers')
+}
 </script>
 
 <style scoped>
-.dashboard {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+.home-container {
+  width: 100%;
+  height: 100vh;
+  background-image: url('../assets/homeBg.webp');
+  background-size: cover;
+  background-position: left;
+  background-repeat: no-repeat;
+  position: relative;
 }
-button {
-  padding: 10px 20px;
-  background-color: #ff4444;
-  color: white;
-  border: none;
+
+.center-stack {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px; /* prostor između logo, ikonice i labele */
+}
+
+.logo-img {
+  height: 100px;
+  position: relative;
+  top: -100px;
+}
+
+.ponuda-img {  
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-radius: 110px; /* opciono, ako želiš blago zaobljene ivice */
+  transition: box-shadow 0.3s ease;
 }
-button:hover {
-  background-color: #cc0000;
+
+.label-ponuda {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-shadow: 2px 1px 1px rgba(3, 90, 202, 0.9);
 }
+
+
 </style>

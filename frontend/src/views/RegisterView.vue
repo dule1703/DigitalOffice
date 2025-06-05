@@ -1,17 +1,19 @@
 <template>
-  <div class="register">
-    <h1>Registracija</h1>
-    <form @submit.prevent="register">
-      <input v-model="name" placeholder="Ime i prezime" required />
-      <input v-model="email" placeholder="Email" type="email" required />
-      <input v-model="password" type="password" placeholder="Lozinka" required />
-      <button type="submit" :disabled="isLoading">
-        {{ isLoading ? 'Registrujem...' : 'Registruj se' }}
-      </button>
-    </form>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-    <p v-if="successMessage" class="success">{{ successMessage }}</p>
-    <router-link to="/login" class="back-link">Nazad na prijavu</router-link>
+  <div class="register-container">
+    <div class="register-box">
+      <h1>Registracija</h1>
+      <form @submit.prevent="register">
+        <input v-model="name" placeholder="Ime i prezime" required />
+        <input v-model="email" placeholder="Email" type="email" required />
+        <input v-model="password" type="password" placeholder="Lozinka" required />
+        <button type="submit" :disabled="isLoading">
+          {{ isLoading ? 'Registrujem...' : 'Registruj se' }}
+        </button>
+      </form>
+      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+      <p v-if="successMessage" class="success">{{ successMessage }}</p>
+      <router-link to="/login" class="back-link">Nazad na prijavu</router-link>
+    </div>
   </div>
 </template>
 
@@ -65,37 +67,91 @@ const register = async () => {
 </script>
 
 <style scoped>
-.register {
-  max-width: 400px;
-  margin: 0 auto;
+.register-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #035aca;
   padding: 20px;
-  text-align: center;
 }
-input {
-  padding: 8px;
-  margin: 10px 0;
+
+.register-box {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
   width: 100%;
 }
+
+h1 {
+  color: #035aca;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 2px solid #00aeef;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #035aca;
+}
+
 button {
-  padding: 10px 20px;
-  background-color: #42b983;
-  color: white;
+  width: 100%;
+  padding: 12px;
+  background-color: #00aeef;
+  color: #ffffff;
+  font-size: 16px;
   border: none;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
+
 button:disabled {
-  background-color: #ccc;
+  background-color: #b3dff3;
+  cursor: not-allowed;
 }
+
+button:hover:not(:disabled) {
+  background-color: #028ac2;
+}
+
 .error {
-  color: red;
+  color: #d32f2f;
+  margin-top: 10px;
 }
+
 .success {
-  color: green;
+  color: #388e3c;
+  margin-top: 10px;
 }
+
 .back-link {
   display: block;
-  margin-top: 15px;
-  color: #42b983;
+  margin-top: 20px;
+  color: #00aeef;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back-link:hover {
   text-decoration: underline;
 }
 </style>
