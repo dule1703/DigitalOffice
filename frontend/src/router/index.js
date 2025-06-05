@@ -6,6 +6,7 @@ import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import ResetPasswordRequestView from '@/views/ResetPasswordRequestView.vue';
 import SubmitNewPasswordView from '@/views/SubmitNewPasswordView.vue';
+import OffersView from '@/views/OffersView.vue';
 
 const routes = [
   {
@@ -41,6 +42,11 @@ const routes = [
     name: 'ResetPassword',
     component: SubmitNewPasswordView 
   },
+  {
+    path: '/offers',
+    name: 'Offers',
+    component: OffersView
+  }
 ];
 
 const router = createRouter({

@@ -1,10 +1,19 @@
 <template>
-  <button class="logout-button" @click="handleLogout">
-    <span class="text">Logout</span>
-    <span class="icon">
-      <slot name="icon" />
-    </span>
-  </button>
+  <div class="header-wrapper">
+    <div class="logo-wrapper">
+      <span class="logo">
+        <slot name="logo" />
+      </span>
+    </div>
+    <div class="button-wrapper">
+        <button class="logout-button" @click="handleLogout">
+          <span class="text">Logout</span>
+          <span class="icon">
+            <slot name="icon" />
+          </span>
+        </button>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -21,22 +30,33 @@ const handleLogout = () => {
 </script>
 
 <style scoped>
+
+.header-wrapper {
+  display: flex;
+  justify-content: space-between; /* ↔ logo levo, dugme desno */
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
 .logout-button {
   display: flex;
   align-items: center;
   gap: 8px;
 
-  background: transparent;
-  border: 1px solid white;
-  border-radius: 4px;
+  background: #035aca;
+  border: 2px solid white;
+  border-radius: 10px;
   color: white;
   font-size: 18px;
   padding: 10px 16px;
   cursor: pointer;
 }
 
-.logout-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+.logo img {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
 }
 
 .icon {
