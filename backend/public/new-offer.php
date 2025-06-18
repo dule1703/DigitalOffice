@@ -2,19 +2,13 @@
 
 use App\Controllers\OfferController;
 
-
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../app/Core/cors.php';
 
-
 header('Content-Type: application/json');
 
-if (!isset($_GET['id'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Nedostaje ID.']);
-    exit;
-}
-
+$data = json_decode(file_get_contents('php://input'), true);
 $controller = new OfferController();
-$response = $controller->getOfferById($_GET['id']);
+$response = $controller->createOffer($data);
 
 echo json_encode($response);

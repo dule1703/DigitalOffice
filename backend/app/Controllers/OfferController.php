@@ -32,4 +32,25 @@ class OfferController {
         return ['status' => 'success', 'data' => $results];
     }
 
+    public function createOffer($data) {
+        $success = $this->offerModel->createOffer($data);
+        return $success
+            ? ['status' => 'success', 'message' => 'Ponuda je uspešno kreirana.']
+            : ['status' => 'error', 'message' => 'Greška pri kreiranju ponude.'];
+    }
+
+    public function updateOffer($id, $data) {
+        $success = $this->offerModel->updateOffer($id, $data);
+        return $success
+            ? ['status' => 'success', 'message' => 'Ponuda je uspešno ažurirana.']
+            : ['status' => 'error', 'message' => 'Greška pri ažuriranju ponude.'];
+    }
+
+    public function deleteOffer($id) {
+        $success = $this->offerModel->deleteOffer($id);
+        return $success
+            ? ['status' => 'success', 'message' => 'Ponuda je obrisana.']
+            : ['status' => 'error', 'message' => 'Greška pri brisanju ponude.'];
+    }
+
 }

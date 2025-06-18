@@ -26,7 +26,7 @@
 import {useRouter} from 'vue-router';
 import LogoutView from '@/components/LogoutView.vue';
 import logoutIcon from '@/assets/logoutIcon.png';
-import fullLogo from '@/assets/full-logo.png';
+
 
 const router = useRouter();
 

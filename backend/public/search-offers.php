@@ -1,7 +1,7 @@
 <?php
 
 use App\Controllers\OfferController;
-use App\Core\cors;
+
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../app/Core/cors.php';
