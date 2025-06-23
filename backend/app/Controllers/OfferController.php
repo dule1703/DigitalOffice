@@ -27,7 +27,12 @@ class OfferController {
         return ['status' => 'error', 'message' => 'Ponuda nije pronađena.'];
     }
 
-    public function searchOffers($term) {
+   public function searchOffers($term) {
+        $term = trim($term);
+        if (strlen($term) < 2) {
+            return ['status' => 'error', 'message' => 'Prekratak pojam za pretragu.'];
+        }
+
         $results = $this->offerModel->searchOffers($term);
         return ['status' => 'success', 'data' => $results];
     }

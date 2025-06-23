@@ -1,22 +1,25 @@
 <template>
   <div class="home-container">
     <div class="header">
-      <!-- Logout dugme gore desno -->
-      <LogoutView>
-        <!-- <template #logo>
-          <img :src="fullLogo" alt="full-logo"  />
-        </template> -->
-        <template #icon>
-          <img :src="logoutIcon" alt="Logout" width="24" height="24" />
-        </template>
-      </LogoutView>
+      <LogoutView></LogoutView>   
+      
+        <div class="center-stack">
+          <div class="logo-wrapper">
+            <img src="@/assets/logoHome.png" alt="logo" class="logo-img" />
+          </div>
 
-      <!-- Centralni blok: logo, ikonica, labela -->
-      <div class="center-stack">
-        <img src="@/assets/logoHome.png" alt="logo" class="logo-img" />
-        <img src="@/assets/ponuda.png" alt="ponuda" class="ponuda-img" @click="offersPage" />
-        <h4 class="label-ponuda">Ponude</h4>
-      </div>
+          <div class="options-wrapper">
+            <div>
+              <img src="@/assets/ponuda.png" alt="Klijenti" class="ponuda-img" @click="clientsPage" />
+              <h4 class="label-ponuda">Klijenti</h4>
+            </div>
+            <div>
+              <img src="@/assets/ponuda.png" alt="ponuda" class="ponuda-img" @click="offersPage" />
+              <h4 class="label-ponuda">Ponude</h4>
+            </div>
+          </div>
+        </div>
+
     </div>
   </div>
 </template>
@@ -29,6 +32,10 @@ import logoutIcon from '@/assets/logoutIcon.png';
 
 
 const router = useRouter();
+
+const clientsPage = async () => {
+  router.push('/clients');
+}
 
 const offersPage = async() => {
   router.push('/offers')
@@ -51,14 +58,40 @@ const offersPage = async() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px; /* prostor između logo, ikonice i labele */
+  gap: 2rem;
+}
+
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
 }
 
 .logo-img {
+  height: 100px;
+}
+
+.options-wrapper {
+  display: flex;
+  gap: 2rem;
+}
+
+.options-wrapper > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .options-wrapper {
+    flex-direction: column;
+  }
+}
+
+.logo-img {  
   height: 100px;
   position: relative;
   top: -100px;
@@ -78,5 +111,9 @@ const offersPage = async() => {
   text-shadow: 2px 1px 1px rgba(3, 90, 202, 0.9);
 }
 
-
+@media (max-width: 768px) {
+  .center-stack {
+    flex-direction: column;
+  }
+}
 </style>

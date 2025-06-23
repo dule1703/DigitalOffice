@@ -8,7 +8,7 @@ $allowedOrigins = array_map('trim', explode(',', $allowedOriginsRaw));
 
 if (in_array($origin, $allowedOrigins)) {
     header("Access-Control-Allow-Origin: $origin");
-    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+    header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type, Authorization");
     header("Access-Control-Allow-Credentials: true");
     error_log("CORS headeri postavljeni za: $origin");

@@ -7,6 +7,10 @@ import RegisterView from '@/views/RegisterView.vue';
 import ResetPasswordRequestView from '@/views/ResetPasswordRequestView.vue';
 import SubmitNewPasswordView from '@/views/SubmitNewPasswordView.vue';
 import OffersView from '@/views/OffersView.vue';
+import CreateOfferView from '@/views/CreateOfferView.vue';
+import EditOfferView from '@/views/EditOfferView.vue';
+import PrintOfferView from '@/views/PrintOfferView.vue';
+import ClientsView from '@/views/ClientsView.vue';
 
 const routes = [
   {
@@ -45,8 +49,34 @@ const routes = [
   {
     path: '/offers',
     name: 'Offers',
-    component: OffersView
+    component: OffersView,
+    meta: { requiresAuth: true },
+  }, 
+  {
+    path: '/create-offer',
+    name: 'CreateOffer',
+    component: CreateOfferView,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/edit-offer/:id',
+    name: 'EditOffer',
+    component: EditOfferView,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/print-offer/:id',
+    name: 'PrintOffer',
+    component: PrintOfferView,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/clients',
+    name: 'Clients',
+    component: ClientsView,
+    meta: {requiresAuth: true}
   }
+
 ];
 
 const router = createRouter({

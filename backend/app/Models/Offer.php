@@ -28,13 +28,15 @@ class Offer {
                     d.id,
                     d.number,
                     d.date,
+                    d.vat_percentage,
+                    d.vat,
                     d.total_without_vat,
                     d.total,
                     d.note,
                     c.c_name AS client_name
                 FROM document d
                 JOIN client c ON d.client_id = c.id
-                ORDER BY d.date DESC
+                ORDER BY d.date ASC
                 LIMIT :limit OFFSET :offset
             ";
 
@@ -95,15 +97,14 @@ class Offer {
         }
     }
 
-    public function searchOffers(string $term, int $limit = 10, int $offset = 0): array {
-        try {
-            if (empty($term) || strlen($term) < 2) {
-                return ['status' => 'error', 'message' => 'Pojam za pretragu mora imati najmanje 2 karaktera.'];
-            }
-            if ($limit < 1 || $offset < 0) {
-                return ['status' => 'error', 'message' => 'Nevalidni parametri za limit ili offset.'];
-            }
+    public function searchOffers($term) {
+        $query = trim($term);
 
+        if (strlen($query) < 2) {
+            return []; // ili možeš vratiti null i obraditi to u kontroleru
+        }
+
+        try {
             $sql = "
                 SELECT 
                     d.id,
@@ -121,36 +122,31 @@ class Offer {
                 FROM document d
                 JOIN client c ON d.client_id = c.id
                 WHERE 
-                    c.c_name LIKE :term OR
-                    c.tax_number LIKE :term OR
-                    c.identification_number LIKE :term OR
-                    c.address LIKE :term OR
-                    c.city LIKE :term OR
-                    c.country LIKE :term OR
-                    d.number LIKE :term OR
-                    d.date LIKE :term OR
-                    d.total_without_vat LIKE :term OR
-                    d.total LIKE :term OR
-                    d.note LIKE :term
-                ORDER BY d.date DESC
-                LIMIT :limit OFFSET :offset
+                    c.c_name LIKE ? OR
+                    c.tax_number LIKE ? OR
+                    c.identification_number LIKE ? OR
+                    c.address LIKE ? OR
+                    c.city LIKE ? OR
+                    c.country LIKE ? OR
+                    d.number LIKE ? OR
+                    d.date LIKE ? OR
+                    d.total_without_vat LIKE ? OR
+                    d.total LIKE ? OR
+                    d.note LIKE ?
+                ORDER BY d.date ASC
+                LIMIT 50 OFFSET 0
             ";
 
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindValue(':term', '%' . $term . '%', PDO::PARAM_STR);
-            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-            $stmt->execute();
-            $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $like = '%' . $query . '%';
+            $params = array_fill(0, 11, $like);
 
-            return [
-                'status' => 'success',
-                'data' => $offers,
-                'message' => empty($offers) ? 'Nema rezultata za zadatu pretragu.' : 'Rezultati pretrage uspešno preuzeti.'
-            ];
-        } catch (Exception $e) {
+            $stmt->execute($params);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+        } catch (\PDOException $e) {
             error_log("Greška u searchOffers: " . $e->getMessage());
-            return ['status' => 'error', 'message' => 'Greška pri pretrazi ponuda.'];
+            return []; // ili možeš vratiti null, false, ili strukturu sa 'error' ključem
         }
     }
 

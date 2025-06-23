@@ -49,7 +49,7 @@ const handleInactivity = () => {
 const resetInactivityTimer = () => {
   clearTimeout(inactivityTimer);
   if (auth.isAuthenticated) {
-    inactivityTimer = setTimeout(handleInactivity, 5 * 60 * 1000);
+    inactivityTimer = setTimeout(handleInactivity, 15 * 60 * 1000);
   }
 };
 
