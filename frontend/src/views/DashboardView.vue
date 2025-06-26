@@ -2,7 +2,7 @@
   <div class="home-container">
     <div class="header">
       <LogoutView></LogoutView>   
-      
+    </div> 
         <div class="center-stack">
           <div class="logo-wrapper">
             <img src="@/assets/logoHome.png" alt="logo" class="logo-img" />
@@ -20,7 +20,7 @@
           </div>
         </div>
 
-    </div>
+    
   </div>
 </template>
 

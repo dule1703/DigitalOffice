@@ -122,8 +122,6 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import LogoutView from '@/components/LogoutView.vue';
-import fullLogo from '@/assets/full-logo.png';
-import logoutIcon from '@/assets/logoutIcon.png';
 import { debounce } from 'lodash';
 import arrowIcon from '@/assets/arrow-down.png';
 import newIcon from '@/assets/new-icon.png';
@@ -249,7 +247,14 @@ watch(perPage, () => {
   currentPage.value = 1;
 });
 
-const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString('sr-RS');
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // meseci su 0-indeksirani
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 
 onMounted(fetchOffers);
 

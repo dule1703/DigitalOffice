@@ -11,6 +11,8 @@ import CreateOfferView from '@/views/CreateOfferView.vue';
 import EditOfferView from '@/views/EditOfferView.vue';
 import PrintOfferView from '@/views/PrintOfferView.vue';
 import ClientsView from '@/views/ClientsView.vue';
+import CreateClientView from '@/views/CreateClientView.vue';
+import EditClientView from '@/views/EditClientView.vue';
 
 const routes = [
   {
@@ -75,7 +77,20 @@ const routes = [
     name: 'Clients',
     component: ClientsView,
     meta: {requiresAuth: true}
+  },
+  {
+    path: '/create-client',
+    name: 'CreateClient',
+    component: CreateClientView,
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/edit-client/:id',
+    name: 'EditClient',
+    component: EditClientView,
+    meta: {requiresAuth: true}
   }
+
 
 ];
 

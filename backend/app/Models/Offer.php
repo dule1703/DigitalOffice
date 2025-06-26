@@ -5,6 +5,7 @@ namespace App\Models;
 use PDO;
 use App\Core\Database;
 use Exception;
+use App\Helpers\Utils;
 
 class Offer {
     private $conn;
@@ -17,12 +18,8 @@ class Offer {
         }
     }
 
-    public function getAllOffers(int $limit = 10, int $offset = 0): array {
+    public function getAllOffers() {
         try {
-            if ($limit < 1 || $offset < 0) {
-                return ['status' => 'error', 'message' => 'Nevalidni parametri za limit ili offset.'];
-            }
-
             $sql = "
                 SELECT 
                     d.id,
@@ -37,12 +34,11 @@ class Offer {
                 FROM document d
                 JOIN client c ON d.client_id = c.id
                 ORDER BY d.date ASC
-                LIMIT :limit OFFSET :offset
+               
             ";
 
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+           
             $stmt->execute();
             $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -57,7 +53,7 @@ class Offer {
         }
     }
 
-    public function getOfferById(string $id): array {
+    public function getOfferById(string $id) {
         try {
             if (empty($id)) {
                 return ['status' => 'error', 'message' => 'ID ponude je obavezan.'];
@@ -156,6 +152,7 @@ class Offer {
                 return ['status' => 'error', 'message' => 'Nevalidni podaci: total_without_vat i client_id su obavezni.'];
             }
 
+            $id = Utils::generateUUID();
             $vat_percentage = 18;
             $vat = round($data['total_without_vat'] * $vat_percentage / 100);
             $total = $data['total_without_vat'] + $vat;
@@ -183,7 +180,7 @@ class Offer {
 
             $stmt = $this->conn->prepare($sql);
             $success = $stmt->execute([
-                'id' => $this->generateUUID(),
+                'id' => $id,
                 'number' => $number,
                 'date' => date('Y-m-d H:i:s'),
                 'service_date' => date('Y-m-d H:i:s'),
@@ -198,7 +195,7 @@ class Offer {
 
             if ($success) {
                 $this->conn->commit();
-                return ['status' => 'success', 'message' => 'Ponuda je uspešno kreirana.', 'data' => ['id' => $this->generateUUID()]];
+                return ['status' => 'success', 'message' => 'Ponuda je uspešno kreirana.', 'data' => ['id' => $id]];
             } else {
                 $this->conn->rollBack();
                 return ['status' => 'error', 'message' => 'Neuspešno kreiranje ponude.'];
@@ -210,16 +207,7 @@ class Offer {
         }
     }
 
-    private function generateUUID(): string {
-        return sprintf(
-            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0x0fff) | 0x4000,
-            mt_rand(0, 0x3fff) | 0x8000,
-            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
-        );
-    }
+  
 
     public function updateOffer(string $id, array $data): array {
         try {
