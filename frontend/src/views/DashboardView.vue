@@ -114,6 +114,7 @@ const offersPage = async() => {
 @media (max-width: 768px) {
   .center-stack {
     flex-direction: column;
+    top: 60%;
   }
 }
 </style>

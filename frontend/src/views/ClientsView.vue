@@ -121,25 +121,31 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import LogoutView from '@/components/LogoutView.vue';
 import { debounce } from 'lodash';
+import LogoutView from '@/components/LogoutView.vue';
+import { useClientStore } from '@/stores/clientStore.js';
 import arrowIcon from '@/assets/arrow-down.png';
 import newIcon from '@/assets/new-icon.png';
-import prevIcon from '@/assets/prev-arrow.png'
-import nextIcon from '@/assets/next-arrow.png'
-import editIcon from '@/assets/edit-icon.png'
-import deleteIcon from '@/assets/delete-icon.svg'
-
+import prevIcon from '@/assets/prev-arrow.png';
+import nextIcon from '@/assets/next-arrow.png';
+import editIcon from '@/assets/edit-icon.png';
+import deleteIcon from '@/assets/delete-icon.svg';
 
 const API_URL = import.meta.env.VITE_API_URL;
-const clients = ref([]);
+const store = useClientStore();
+const router = useRouter();
+
 const perPage = ref(10);
 const searchQuery = ref('');
 const currentPage = ref(1);
-const router = useRouter();
 const dropdownOpen = ref(false);
 const showDeleteModal = ref(false);
 const clientToDelete = ref(null);
+
+onMounted(async () => {
+  await store.fetchClients(API_URL);
+});
+
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value;
@@ -150,21 +156,9 @@ const selectPerPage = (value) => {
   dropdownOpen.value = false;
 };
 
-const fetchClients = async () => {
-  try {
-    const res = await fetch(`${API_URL}get-clients.php`);
-    const result = await res.json();
-    if (result.status === 'success' && result.data?.data) {
-      clients.value = result.data.data;
-    }
-  } catch (error) {
-    console.error('Greška prilikom učitavanja ponuda:', error);
-  }
-};
-
 const searchClients = async (query) => {
   if (!query) {
-    await fetchClients();
+    await store.fetchClients(API_URL);
     return;
   }
 
@@ -177,10 +171,10 @@ const searchClients = async (query) => {
 
     const result = await res.json();
     if (result.status === 'success' && Array.isArray(result.data)) {
-      clients.value = result.data;
+      store.clients = result.data;
       currentPage.value = 1;
     } else {
-      clients.value = [];
+      store.clients = [];
     }
   } catch (err) {
     console.error('Greška u pretrazi:', err);
@@ -194,16 +188,13 @@ watch(
   }, 400)
 );
 
-
-// Paginacija
-const totalPages = computed(() => Math.ceil(clients.value.length / perPage.value));
+const totalPages = computed(() => Math.ceil(store.clients.length / perPage.value));
 
 const paginatedClients = computed(() => {
   const start = (currentPage.value - 1) * perPage.value;
-  return clients.value.slice(start, start + perPage.value);
+  return store.clients.slice(start, start + perPage.value);
 });
 
-// List of pages with `...`
 const paginationPages = computed(() => {
   const pages = [];
   const total = totalPages.value;
@@ -224,6 +215,10 @@ const paginationPages = computed(() => {
   return pages;
 });
 
+watch(perPage, () => {
+  currentPage.value = 1;
+});
+
 const prevPage = () => {
   if (currentPage.value > 1) currentPage.value--;
 };
@@ -238,27 +233,19 @@ const createClient = () => {
 
 const editClient = (id) => {
   router.push(`/edit-client/${id}`);
-}
+};
 
 const printClient = (id) => {
   router.push(`/print-client/${id}`);
-}
-
-watch(perPage, () => {
-  currentPage.value = 1;
-});
+};
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
   const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // meseci su 0-indeksirani
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 };
-
-
-
-onMounted(fetchClients);
 
 const openDeleteModal = (clientId) => {
   clientToDelete.value = clientId;
@@ -270,7 +257,6 @@ const cancelDelete = () => {
   showDeleteModal.value = false;
 };
 
-// Delete client
 const confirmDelete = async () => {
   if (!clientToDelete.value) return;
 
@@ -285,7 +271,7 @@ const confirmDelete = async () => {
 
     const result = await res.json();
     if (result.status === 'success') {
-      clients.value = clients.value.filter(client => client.id !== clientToDelete.value);
+      store.clients = store.clients.filter(client => client.id !== clientToDelete.value);
     } else {
       alert(result.message);
     }
@@ -296,6 +282,7 @@ const confirmDelete = async () => {
   }
 };
 </script>
+
 <style scoped>
 .title p {
   font-size: 1.9rem;

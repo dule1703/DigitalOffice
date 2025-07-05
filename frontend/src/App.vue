@@ -40,7 +40,7 @@ const startTokenExpiryCheck = () => {
 
 // Logout nakon 5 minuta neaktivnosti
 const handleInactivity = () => {
-  console.log('Neaktivnost 5 min. Logout.');
+  console.log('Neaktivnost 30 min. Logout.');
   auth.logout();
   router.push('/login').catch(() => {});
 };
@@ -49,7 +49,7 @@ const handleInactivity = () => {
 const resetInactivityTimer = () => {
   clearTimeout(inactivityTimer);
   if (auth.isAuthenticated) {
-    inactivityTimer = setTimeout(handleInactivity, 15 * 60 * 1000);
+    inactivityTimer = setTimeout(handleInactivity, 30 * 60 * 1000);
   }
 };
 

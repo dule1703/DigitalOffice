@@ -67,7 +67,8 @@ class Offer {
                     d.total_without_vat,
                     d.total,
                     d.note,
-                    c.c_name AS client_name
+                    d.model_data,
+                    c.c_name AS client_name                    
                 FROM document d
                 JOIN client c ON d.client_id = c.id
                 WHERE d.id = :id
@@ -172,9 +173,9 @@ class Offer {
 
             $sql = "
                 INSERT INTO document (
-                    id, number, date, service_date, total_without_vat, vat_percentage, vat, total, note, client_id, document_type_id
+                    id, number, date, service_date, total_without_vat, vat_percentage, vat, total, model_data, note, client_id, document_type_id
                 ) VALUES (
-                    :id, :number, :date, :service_date, :total_without_vat, :vat_percentage, :vat, :total, :note, :client_id, :document_type_id
+                    :id, :number, :date, :service_date, :total_without_vat, :vat_percentage, :vat, :total, :model_data, :note, :client_id, :document_type_id
                 )
             ";
 
@@ -190,7 +191,8 @@ class Offer {
                 'total' => $total,
                 'note' => isset($data['note']) ? $data['note'] : '',
                 'client_id' => $data['client_id'],
-                'document_type_id' => '003'
+                'document_type_id' => '003',
+                'model_data' => $data['model_data']
             ]);
 
             if ($success) {
