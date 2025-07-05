@@ -408,7 +408,7 @@ const modelBasePrice = computed(() => {
   const model = storeModel.models.find(m =>
     m.id === selectedModelId.value && m.package_name === selectedPackage.value
   );
-  return model?.model_price || 0;
+  return Number(model?.model_price || 0);
 });
 
 const additionalSelected = computed(() => [selectedColor.value, selectedWheel.value, selectedInterior.value].filter(Boolean));
@@ -430,17 +430,32 @@ const currentModelTotalWithVAT = computed(() => currentModelTotal.value * (1 + P
 
 const savedModelsTotal = computed(() => {
   return savedModels.value.reduce((sum, model) => {
-    const base = storeModel.models.find(m =>
-      m.id === model.model_id && m.package_name === model.package_name)?.model_price || 0;
-    const accessories = [...(model.accessories || []), model.color, model.wheels, model.interior].filter(Boolean);
+    const base = Number(
+      storeModel.models.find(m =>
+        m.id === model.model_id && m.package_name === model.package_name
+      )?.model_price || 0
+    );
+
+    const accessories = [
+      ...(model.accessories || []),
+      model.color,
+      model.wheels,
+      model.interior
+    ].filter(Boolean);
+
     const accSum = accessories.reduce((aSum, acc) => {
       const item = storeModel.models.find(m =>
-        m.id === model.model_id && m.package_name === model.package_name && m.accessories_name === acc);
+        m.id === model.model_id &&
+        m.package_name === model.package_name &&
+        m.accessories_name === acc
+      );
       return aSum + (item ? Number(item.accessories_price || 0) : 0);
     }, 0);
+
     return sum + ((base + accSum) * model.car_quantity);
   }, 0);
 });
+
 
 const savedModelsTotalWithVAT = computed(() => savedModelsTotal.value * (1 + PDV_RATE));
 const totalOfferWithoutVAT = computed(() => savedModelsTotal.value + currentModelTotal.value);
