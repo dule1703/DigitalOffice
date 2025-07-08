@@ -209,9 +209,11 @@
       <ul>
         <li v-for="(model, index) in savedModels" :key="index">
           {{ model.model_name }} / {{ model.package_name }} / {{ model.engine_id }} / {{ model.car_quantity }} kom
+          <button @click="removeSavedModel(index)" class="remove-button">Obriši</button>
         </li>
       </ul>
     </div>
+
 
     <!-- Ukupna ponuda -->
     <div class="form-group total-summary">
@@ -487,6 +489,18 @@ const saveCurrentModel = () => {
   });
   resetModelForm();
 };
+
+const removeSavedModel = (index) => {
+  savedModels.value.splice(index, 1);
+
+  // Ako su svi obrisani, ponovo dozvoli izbor klijenta
+  if (savedModels.value.length === 0) {
+    clientLocked.value = false;
+    selectedClientId.value = '';
+    searchQuery.value = '';
+  }
+};
+
 
 const resetModelForm = () => {
   selectedModelId.value = '';
@@ -831,6 +845,21 @@ select:disabled {
   font-weight: 800;
   letter-spacing: 2px;
 }
+
+.remove-button {
+  margin-left: 10px;
+  padding: 4px 8px;
+  background-color: #ff5555;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  background-color: #cc0000;
+}
+
 
 @media (max-width: 768px) {
   .form-layout {

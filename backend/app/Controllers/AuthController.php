@@ -40,7 +40,7 @@ class AuthController {
             $now = new \DateTime();
             $diff = $now->getTimestamp() - $lastLogin->getTimestamp();
 
-            if ($diff > 12 * 3600) {
+            if ($diff > 2 * 24 * 3600) {
                 $this->userModel->reset2FAStatus($user['id']);
             } else {
                 $this->userModel->updateLastLogin($user['id'], $now->format('Y-m-d H:i:s'));
@@ -155,7 +155,7 @@ public function sendResetToken($email) {
     private function generateJWT($userId) {
         $payload = [
             'user_id' => $userId,
-            'exp' => time() + (12 * 3600)
+            'exp' => time() + (2 * 24 * 3600)
         ];
         return JWT::encode($payload, getenv('JWT_SECRET'), 'HS256');
     }
