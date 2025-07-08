@@ -347,7 +347,7 @@ const filteredEngines = computed(() => {
 const filteredAccessories = computed(() => {
   const seen = new Set();
   return storeModel.models.filter(item => {
-    const valid = item.id === selectedModelId.value && item.package_name === selectedPackage.value;
+    const valid = item.id === selectedModelId.value && item.package_name === selectedPackage.value && item.naziv_stavke === 'ODO';
     const nameValid = item.accessories_name?.trim();
     const unique = !seen.has(item.accessories_name);
     if (valid && nameValid && unique) {
