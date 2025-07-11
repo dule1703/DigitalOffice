@@ -154,8 +154,8 @@ const fetchOffers = async () => {
   try {
     const res = await fetch(`${API_URL}get-offers.php`);
     const result = await res.json();
-    if (result.status === 'success' && result.data?.data) {
-      offers.value = result.data.data;
+    if (result.status === 'success' && result?.data) {
+      offers.value = result.data;
     }
   } catch (error) {
     console.error('Greška prilikom učitavanja ponuda:', error);

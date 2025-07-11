@@ -12,19 +12,11 @@ class OfferController {
     }
 
     public function getAllOffers() {
-        $offers = $this->offerModel->getAllOffers();
-        return [
-            'status' => 'success',
-            'data' => $offers
-        ];
+        return $this->offerModel->getAllOffers();
     }
 
-    public function getOfferById($id) {
-        $offer = $this->offerModel->getOfferById($id);
-        if ($offer) {
-            return ['status' => 'success', 'data' => $offer];
-        }
-        return ['status' => 'error', 'message' => 'Ponuda nije pronađena.'];
+    public function getOfferById($id) {      return $this->offerModel->getOfferById($id);
+
     }
 
    public function searchOffers($term) {

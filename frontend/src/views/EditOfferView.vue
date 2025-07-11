@@ -1,35 +1,35 @@
 <template>
-      <LogoutView>
-        <template #logo>
-          <img :src="fullLogo" alt="full-logo"  />
-        </template>
-        <template #icon>
-          <img :src="logoutIcon" alt="Logout" width="24" height="24" />
-        </template>
-      </LogoutView>
-  <div class="edit-offer-container">
-    <h2>Izmena ponude</h2>
-    <p>ID ponude: {{ offerId }}</p>
+  <div class="header">
+    <LogoutView />
   </div>
+  <OfferForm mode="edit" :offer-id="offerId" />
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import OfferForm from '@/components/OfferForm.vue';
+import { useClientStore } from '@/stores/clientStore';
+import { useModelStore } from '@/stores/modelStore';
+import { useOfferStore } from '@/stores/offerStore';
 
 const route = useRoute();
 const offerId = route.params.id;
+const clientStore = useClientStore();
+const modelStore = useModelStore();
+const offerStore = useOfferStore();
+const API_URL = import.meta.env.VITE_API_URL;
+
+onMounted(async () => {
+  try {
+    await clientStore.fetchClients(API_URL);
+    await modelStore.fetchModels(API_URL);
+    await modelStore.fetchBasicEquipment(API_URL);
+    await offerStore.fetchOffer(offerId);
+  } catch (err) {
+    console.error('Greška pri učitavanju podataka:', err);
+    offerStore.errorMessage = 'Došlo je do greške pri učitavanju podataka.';
+    setTimeout(() => (offerStore.errorMessage = ''), 4000);
+  }
+});
 </script>
-
-<style scoped>
-.edit-offer-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-h2 {
-  color: #035aca;
-}
-</style>

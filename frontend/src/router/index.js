@@ -103,7 +103,7 @@ router.beforeEach((to, from, next) => {
   const auth = useAuthStore();
   const isAuth = auth.isAuthenticated;
 
-  console.log('🔐 Auth check → token:', auth.token, 'user_id:', auth.user_id, 'isAuth:', isAuth);
+  // console.log('🔐 Auth check → token:', auth.token, 'user_id:', auth.user_id, 'isAuth:', isAuth);
 
   if (to.meta.requiresAuth && !isAuth) {
     auth.logout();

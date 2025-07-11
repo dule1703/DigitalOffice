@@ -23,6 +23,7 @@ class Offer {
             $sql = "
                 SELECT 
                     d.id,
+                    d.client_id,
                     d.number,
                     d.date,
                     d.vat_percentage,
@@ -68,6 +69,7 @@ class Offer {
                     d.total,
                     d.note,
                     d.model_data,
+                    d.client_id,
                     c.c_name AS client_name                    
                 FROM document d
                 JOIN client c ON d.client_id = c.id
@@ -235,7 +237,8 @@ class Offer {
                     vat = :vat,
                     total = :total,
                     note = :note,
-                    client_id = :client_id
+                    client_id = :client_id,
+                    model_data = :model_data
                 WHERE id = :id
             ";
 
@@ -248,7 +251,8 @@ class Offer {
                 'total' => $total,
                 'note' => isset($data['note']) ? $data['note'] : '',
                 'client_id' => $data['client_id'],
-                'id' => $id
+                'model_data' => $data['model_data'],
+                'id' => $id                
             ]);
 
             if ($success && $stmt->rowCount() > 0) {
