@@ -1,4 +1,7 @@
 <template>
+  <div class="header">
+      <LogoutView></LogoutView>
+  </div>
   <div class="print-container">
     <h1 class="title">Ponuda br. {{ offerStore.offerId }}</h1>
     <p class="client-info">Klijent: {{ offerStore.searchQuery }}</p>
@@ -59,6 +62,7 @@ import { onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useOfferStore } from '@/stores/offerStore';
 import { useModelStore } from '@/stores/modelStore';
+import LogoutView from '@/components/LogoutView.vue';
 
 const route = useRoute();
 const offerStore = useOfferStore();

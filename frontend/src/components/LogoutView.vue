@@ -1,5 +1,5 @@
 <template>
-<header>
+<header class="no-print">
   <div class="header-wrapper">
     <div class="logo-wrapper" v-if = "!shouldHide">
       <img :src="fullLogo" alt="Logo" class="logo" />
@@ -129,5 +129,11 @@ header {
 .icon {
   display: flex;
   align-items: center;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }
 </style>
