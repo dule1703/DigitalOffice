@@ -33,6 +33,7 @@ export const useOfferStore = defineStore('offer', () => {
   const savedModels = ref([]);
   const offerId = ref(null);
   const PDV_RATE = 0.18;
+  const offerNumber = ref('');
 
   // Actions
   const selectClient = (client) => {
@@ -143,7 +144,8 @@ export const useOfferStore = defineStore('offer', () => {
         }
 
         note.value = offer.note || '';
-        offerId.value = offer.id || id; // Provera oba izvora        
+        offerId.value = offer.id || id; // Provera oba izvora      
+        offerNumber.value = offer.number || '';  
         } else {
         errorMessage.value = result.message || 'Došlo je do greške pri učitavanju ponude.';
         setTimeout(() => (errorMessage.value = ''), 3000);
@@ -410,5 +412,6 @@ export const useOfferStore = defineStore('offer', () => {
     savedModelsTotalWithVAT,
     totalOfferWithoutVAT,
     totalOfferWithVAT,
+    offerNumber
   };
 });

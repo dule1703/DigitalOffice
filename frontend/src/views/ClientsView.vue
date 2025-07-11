@@ -71,7 +71,7 @@
             <td>{{ client.city }}</td>
             <td>{{ client.country }}</td>
             <td>{{ formatDate(client.datum) }}</td>
-            <td><img :src="editIcon" alt="Izmena ponude" class="action-icon" @click="editClient(client.id)"  /></td>
+            <td><img :src="editIcon" alt="Izmena ponude" class="action-icon edit-icon" @click="editClient(client.id)"  /></td>
             <td><img :src="deleteIcon" alt="Brisaje ponude" class="action-icon" @click="openDeleteModal(client.id)"  /></td>            
             <td></td>
             <td></td>
@@ -353,6 +353,11 @@ const confirmDelete = async () => {
   width: 37px;
   height: 37px;
   cursor: pointer;
+}
+
+.edit-icon {
+  width: 34px;
+  height: 34px;
 }
 
 /* Paginacija */

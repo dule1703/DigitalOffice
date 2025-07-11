@@ -3,7 +3,7 @@
       <LogoutView></LogoutView>
   </div>
   <div class="print-container">
-    <h1 class="title">Ponuda br. {{ offerStore.offerId }}</h1>
+    <h1 class="title">Ponuda br. {{ offerStore.offerNumber }}</h1>
     <p class="client-info">Klijent: {{ offerStore.searchQuery }}</p>
 
     <div v-for="(model, index) in allModels" :key="index" class="model-card">

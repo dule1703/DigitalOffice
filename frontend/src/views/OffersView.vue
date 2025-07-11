@@ -70,9 +70,9 @@
             <td>{{ offer.vat }}</td>
             <td>{{ offer.total }}</td>
             <td>{{ offer.note }}</td>
-            <td><img :src="editIcon" alt="Izmena ponude" class="action-icon" @click="editOffer(offer.id)"  /></td>
+            <td><img :src="editIcon" alt="Izmena ponude" class="action-icon edit-icon" @click="editOffer(offer.id)"  /></td>
             <td><img :src="deleteIcon" alt="Brisaje ponude" class="action-icon" @click="openDeleteModal(offer.id)"  /></td>
-            <td><img :src="printIcon" alt="Štampanje ponude" class="action-icon" @click="printOffer(offer.id)"  /></td>
+            <td><img :src="printIcon" alt="Štampanje ponude" class="action-icon print-icon" @click="printOffer(offer.id)"  /></td>
             <td></td>
             <td></td>
           </tr>
@@ -373,6 +373,11 @@ const confirmDelete = async () => {
   width: 37px;
   height: 37px;
   cursor: pointer;
+}
+
+.edit-icon, .print-icon {
+  width: 34px;
+  height: 34px;
 }
 
 /* Paginacija */
