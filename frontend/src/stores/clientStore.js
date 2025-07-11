@@ -20,5 +20,12 @@ export const useClientStore = defineStore('client', () => {
     }
   };
 
-  return { clients, fetchClients };
+
+  // Nova metoda za forsirano osvežavanje
+  const refreshClients = async (API_URL) => {
+    loaded.value = false; // Resetujemo loaded da bismo forsirali ponovno učitavanje
+    await fetchClients(API_URL);
+  };
+
+  return { clients, fetchClients, refreshClients, loaded };
 });

@@ -28,6 +28,8 @@
 <script setup>
 import LogoutView from '@/components/LogoutView.vue';
 import { ref } from 'vue';
+import { useOfferStore } from '@/stores/offerStore'; // Uvožen useOfferStore**
+const offerStore = useOfferStore(); // Inicijalizacija offerStore**
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -165,6 +167,7 @@ const handleSubmit = async () => {
 
     if (result.status === 'success') {
            resetForm();
+           offerStore.refreshClients();
     }
 
     setTimeout(() => {

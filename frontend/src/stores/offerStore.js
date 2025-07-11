@@ -43,6 +43,13 @@ export const useOfferStore = defineStore('offer', () => {
     dropdownVisible.value = false;
   };
 
+
+    // Metoda za osvežavanje klijenata
+  const refreshClients = () => {
+    console.log('Pokretanje osvežavanja klijenata');
+    storeClient.refreshClients(API_URL);
+  };
+
   const hideDropdown = () => {
     setTimeout(() => (dropdownVisible.value = false), 100);
   };
@@ -412,6 +419,7 @@ export const useOfferStore = defineStore('offer', () => {
     savedModelsTotalWithVAT,
     totalOfferWithoutVAT,
     totalOfferWithVAT,
-    offerNumber
+    offerNumber,
+    refreshClients
   };
 });
